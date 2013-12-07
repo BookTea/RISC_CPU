@@ -108,10 +108,37 @@ module machine(inc_pc,
 			  {wr,
 			   load_ir,
 			   halt,
-			   datactl_ena} <= 4'b0001;
-		       end
-		     
-		
+			   datactl_ena} <= 4'b0010;
+		       end // if (opcode == HLT)
+		     else
+		       begin
+			  {inc_pc,
+			   load_acc,
+			   load_pc,
+			   rd}          <= 4'b1000;
+			  {wr,
+			   load_ir,
+			   halt,
+			   datactl_ena} <= 4'b0000;			  
+		       end // else: !if(opcode == HLT)
+		     state <= 3'b100;
+		  end // case: 3'b011
+		3'b100:
+		  begin
+		     if(opcode == JMP)
+		       begin
+			  {inc_pc,
+			   load_acc,
+			   load_pc,
+			   rd}          <= 4'b0010;
+			  {wr,
+			   load_ir,
+			   halt,
+			   datactl_ena} <= 4'b0000;			  
+		       end // if (opcode == JMP)
+		     else
+		       if(opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
+			  
 		
      end
      
