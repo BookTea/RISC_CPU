@@ -138,8 +138,182 @@ module machine(inc_pc,
 		       end // if (opcode == JMP)
 		     else
 		       if(opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
-			  
-		
-     end
+			 begin
+			    {inc_pc,
+			     load_acc,
+			     load_pc,
+			     rd}          <= 4'b0001;
+			    {wr,
+			     load_ir,
+			     halt,
+			     datactl_ena} <= 4'b0000;
+			 end // if (opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
+		       else
+			 if(opcode == STO)
+			   begin
+			      {inc_pc,
+			       load_acc,
+			       load_pc,
+			       rd}          <= 4'b0000;
+			      {wr,
+			       load_ir,
+			       halt,
+			       datactl_ena} <= 4'b0001;
+			   end // if (opcode == STO)
+			 else
+			   begin
+			      {inc_pc,
+			       load_acc,
+			       load_pc,
+			       rd}          <= 4'b0000;
+			      {wr,
+			       load_ir,
+			       halt,
+			       datactl_ena} <= 4'b0000;
+			   end // else: !if(opcode == STO)
+		     state <= 3'b101;
+		  end // case: 3'b100
+		3'b101:
+		  begin
+		     if(opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
+		       begin
+			  {inc_pc,
+			   load_acc,
+			   load_pc,
+			   rd}          <= 4'b0101;
+			  {wr,
+			   load_ir,
+			   halt,
+			   datactl_ena} <= 4'b0000;
+		       end // if (opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
+		     else
+		       if(opcode == SKZ && zero == 1)
+			 begin
+			    {inc_pc,
+			     load_acc,
+			     load_pc,
+			     rd}          <= 4'b1000;
+			    {wr,
+			     load_ir,
+			     halt,
+			     datactl_ena} <= 4'b0000;
+			 end // if (opcode == SKZ && zero == 1)
+		       else
+			 if(opcode == JMP)
+			   begin
+			      {inc_pc,
+			       load_acc,
+			       load_pc,
+			       rd}          <= 4'b1010;
+			      {wr,
+			       load_ir,
+			       halt,
+			       datactl_ena} <= 4'b0000;
+			   end // if (opcode == JMP)
+			 else
+			   if(opcode == STO)
+			     begin
+				{inc_pc,
+				 load_acc,
+				 load_pc,
+				 rd}          <= 4'b0000;
+				{wr,
+				 load_ir,
+				 halt,
+				 datactl_ena} <= 4'b1001;
+			     end // if (opcode == STO)
+			   else
+			     begin
+				{inc_pc,
+				 load_acc,
+				 load_pc,
+				 rd}          <= 4'b0000;
+				{wr,
+				 load_ir,
+				 halt,
+				 datactl_ena} <= 4'b1010;
+			     end // else: !if(opcode == STO)
+		     state <= 3'b110;
+		  end // case: 3'b101
+		3'b110:
+		  begin
+		     if(opcode == STO)
+		       begin
+			  {inc_pc,
+			   load_acc,
+			   load_pc,
+			   rd}          <= 4'b0000;
+			  {wr,
+			   load_ir,
+			   halt,
+			   datactl_ena} <= 4'b0001;
+		       end // if (opcode == STO)
+		     else
+		       if(opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
+			 begin
+			    {inc_pc,
+			     load_acc,
+			     load_pc,
+			     rd}          <= 4'b0001;
+			    {wr,
+			     load_ir,
+			     halt,
+			     datactl_ena} <= 4'b0000;
+			 end // if (opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
+		       else
+			 begin
+			    {inc_pc,
+			     load_acc,
+			     load_pc,
+			     rd}          <= 4'b0000;
+			    {wr,
+			     load_ir,
+			     halt,
+			     datactl_ena} <= 4'b0000;
+			 end // else: !if(opcode == ADD || opcode == ANDD || opcode == XORR || opcode == LDA)
+		     state <= 3'b111;
+		  end // case: 3'b110
+		3'b111:
+		  begin
+		     if(opcode == SKZ && zero == 1)
+		       begin
+			  {inc_pc,
+			   load_acc,
+			   load_pc,
+			   rd}          <= 4'b1000;
+			  {wr,
+			   load_ir,
+			   halt,
+			   datactl_ena} <= 4'b0000;
+		       end // if (opcode == SKZ && zero == 1)
+		     else
+		       begin
+			  {inc_pc,
+			   load_acc,
+			   load_pc,
+			   rd}          <= 4'b0000;
+			  {wr,
+			   load_ir,
+			   halt,
+			   datactl_ena} <= 4'b0000;			  
+		       end // else: !if(opcode == SKZ && zero == 1)
+		     state <= 3'b000;
+		  end // case: 3'b111
+		default:
+		  begin
+		     {inc_pc,
+		      load_acc,
+		      load_pc,
+		      rd}          <= 4'b0000;
+		     {wr,
+		      load_ir,
+		      halt,
+		      datactl_ena} <= 4'b0000;		     
+		  end // case: default
+	      endcase // casex (state)
+	   end
+	endtask // ctl_style
+endmodule // machine
+
      
    
